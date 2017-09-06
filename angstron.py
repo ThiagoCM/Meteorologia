@@ -35,12 +35,11 @@ def monteAlegre(relactiveHumidity, N):
     print('Monte Alegre Formula is:', round(result,2))
 
 print("""\t\tHi! This is the Index Incendies Calculator - IIC.
-Please follow the below instructions in order to calculate one of the available indexes.
-Tell us where the .XLS (Excel File) is located in your computer.
-Remeber to use /home/user/Documents/<archieve_name>.xls for Linux or C:/Documents/<archieve_name>.xls for Windows""")
+Please follow the below instructions in order to calculate one of the available indexes.\n\n""")
+xls_path = raw_input("""Tell us where the .XLS (Excel File) is located in your computer.
+Remeber to use /home/user/Documents/<archieve_name>.xls for Linux or C:/Documents/<archieve_name>.xls for Windows\n""")
 
-
-workbook = xlrd.open_workbook('/home/thiago/Desktop/Meteorologia/Documents/__RJ_A601_ECOLOGIA_AGRICOLA.xls')
+workbook = xlrd.open_workbook(xls_path)
 worksheet = workbook.sheet_by_index(0)
 
 airTemp12 = worksheet.cell(12, 13).value
