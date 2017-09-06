@@ -41,6 +41,26 @@ Remeber to use /home/user/Documents/<archieve_name>.xls for Linux or C:/Document
 
 workbook = xlrd.open_workbook(xls_path)
 worksheet = workbook.sheet_by_index(0)
+option = 0
+
+while True:
+    option = int(raw_input("""\n\n This is the IIC menu. Type the number to calculate it's index.
+    1 - Angstron Index
+    2 - Telicyn Index
+    3 - Nesterov Index
+    4 - Monte Alegre Formula\n"""))
+
+    if option == 1:
+        # calculates angstron index
+        
+    elif option == 2:
+        # calculates telicyn index
+
+    elif option == 3:
+        # calculates nesterov index
+
+    elif option == 4:
+        # calculates monte carlo formula
 
 airTemp12 = worksheet.cell(12, 13).value
 umiRel = worksheet.cell(12, 37).value
