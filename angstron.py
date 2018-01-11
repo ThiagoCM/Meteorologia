@@ -12,8 +12,11 @@ def telicynIndex(airTemperature, dewPoint, N):
     ###This function calculates the Telicyn Index for a set of air temperature and dew point, measured at 13h.
     i = 0
     telicyn = 0.0
-    while i < N:
-        telicyn = math.log(airTemperature - dewPoint, 10) + telicyn
+    while i <= N:
+        if(airTemperature[i] == 'NULL' or dewPoint[i] == 'NULL'):
+            i = i + 1
+            continue
+        telicyn = math.log(airTemperature[i] - dewPoint[i], 10) + telicyn
         i = i + 1
     print('Telicyn index is:', round(telicyn, 2))
 
@@ -67,9 +70,36 @@ while menu == True:
 
         
     elif option == '2':
-        # calculates telicyn index
-        print("something")
+        airTemp_line_begin = int(input("\nWhat's the line on the Excel file that contains the first Air Temperature information?\n Example: If the first air temperature is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
+        airTemp_line_end = int(input("\nWhat's the line on the Excel file that contains the last Air Temperature information?\n Example: If the last air temperature is at the line 25 on the excel document, you must use the value of 24. (1->25 = 24)\n"))
+        airTemp_col = int(input("\nWhat's the column on the Excel file that contains the Air Temperature information?\n Example: If the air temperature is at the column O on the excel document, you must use the value of 14. (1->15(O) = 14)\n"))
+        airTemp_line_aux = airTemp_line_begin
+        airTemp_list = []
+        
+        dewPon_line_begin = int(input("\nWhat's the line on the Excel file that contains the first Dew Point information?\n Example: If the first dew point is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
+        dewPon_line_end = int(input("\nWhat's the line on the Excel file that contains the last Dew Point information?\n Example: If the last dew point is at the line 25 on the excel document, you must use the value of 24. (1->25 = 24)\n"))
+        dewPon_col = int(input("\nWhat's the column on the Excel file that contains the Dew Point information?\n Example: If the air temperature is at the column BK on the excel document, you must use the value of 62. (1->63(BK) = 62)\n"))
+        dewPon_line_aux = dewPon_line_begin
+        dewPon_list = []
+        
+        while (airTemp_line_end - airTemp_line_aux >= 0):
+            print("entrei1")
+            airTemp_list.append(worksheet.cell(airTemp_line_aux, airTemp_col).value)
+            airTemp_line_aux = airTemp_line_aux + 1
 
+        while (dewPon_line_end - dewPon_line_aux >= 0) :
+            print("entrei2")
+            dewPon_list.append(worksheet.cell(dewPon_line_aux, dewPon_col).value)
+            dewPon_line_aux = dewPon_line_aux + 1
+
+        print(airTemp_list)
+        print(dewPon_list)
+
+        countAir = airTemp_line_end - airTemp_line_begin
+        countDew = dewPon_line_end - dewPon_line_begin
+        if (countAir != countDew):
+            print("The number of information related to Air Temperature is not the same as the number of information related to Dew Point")
+        telicynIndex(airTemp_list, dewPon_list, countAir)
 
     elif option == '3':
         # calculates nesterov index
