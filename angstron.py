@@ -25,7 +25,7 @@ def nesterovIndex(airTemperature, airDeficit, N):
     i = 0
     nesterov = 0.0
     while i < N:
-        #falta calcular o airDeficit
+        #airDeficit missing
         nesterov = airDeficit - airTemperature + nesterov
 
     print('Nesterov Index is:', round(nesterov,2))
@@ -34,8 +34,11 @@ def monteAlegre(relactiveHumidity, N):
         ###This function calculates the Monte Alegre's Formula for a set of relative humidity, measured at 13h.
     i = 0
     monte = 0.0
-    while i < N:
-        monte = (100 / relactiveHumidity) + monte
+    while i <= N:
+        if(relactiveHumidity[i] == 'NULL'):
+            i = i + 1
+            continue
+        monte = (100 / relactiveHumidity[i]) + monte
         i = i + 1
     print('Monte Alegre Formula is:', round(monte,2))
 
@@ -83,12 +86,10 @@ while menu == True:
         dewPon_list = []
         
         while (airTemp_line_end - airTemp_line_aux >= 0):
-            print("entrei1")
             airTemp_list.append(worksheet.cell(airTemp_line_aux, airTemp_col).value)
             airTemp_line_aux = airTemp_line_aux + 1
 
         while (dewPon_line_end - dewPon_line_aux >= 0) :
-            print("entrei2")
             dewPon_list.append(worksheet.cell(dewPon_line_aux, dewPon_col).value)
             dewPon_line_aux = dewPon_line_aux + 1
 
@@ -107,9 +108,17 @@ while menu == True:
 
 
     elif option == '4':
-        # calculates monte carlo formula
-        print("something")
+        relHum_line_begin = int(input("\nWhat's the line on the Excel file that contains the first Relative Humidity information?\n Example: If the first Relative Humidity is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
+        relHum_line_end = int(input("\nWhat's the line on the Excel file that contains the last Relative Humidity information?\n Example: If the last Relative Humidity is at the line 25 on the excel document, you must use the value of 24. (1->25 = 24)\n"))
+        relHum_col = int(input("\nWhat's the column on the Excel file that contains the Relative Humidity information?\n Example: If the Relative Humidity is at the column O on the excel document, you must use the value of 14. (1->15(O) = 14)\n"))
+        relHum_line_aux = relHum_line_begin
+        relHum_list = []
 
+        while (relHum_line_end - relHum_line_aux >= 0):
+            relHum_list.append(worksheet.cell(relHum_line_aux, relHum_col).value)
+            relHum_line_aux = relHum_line_aux + 1
+        print(relHum_list)
+        monteAlegre(relHum_list, relHum_line_end - relHum_line_begin)
 
     elif option == '5':
         menu = False
