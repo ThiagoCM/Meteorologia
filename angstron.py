@@ -1,11 +1,39 @@
 import xlrd
 import math
+import matplotlib.pyplot as plt
+
+def ploting1(dailyValues, indexes):
+    if(indexes == [1,2.5,5,7.5,10]):
+        plt.plot(1,dailyValues, 'ro')
+        plt.axis([0,10,0,7.5], 2)
+        plt.ylabel('Index Values for Angstron Index')
+        plt.xlabel('Angstron Daily Values')
+        plt.show()
+    if(indexes == [2, 3.5, 5]):
+        plt.plot(1,dailyValues, 'ro')
+        plt.axis([0,10,0,10], 2)
+        plt.ylabel('Index Values for Telicyn Index')
+        plt.xlabel('Telicyn Daily Values')
+        plt.show()
+    if(indexes == [300, 500, 1000, 4000]):
+        plt.plot(1,dailyValues, 'ro')
+        plt.axis([0,10,0,4000], 2)
+        plt.ylabel('Index Values for Nesterov Index')
+        plt.xlabel('Nesterov Daily Values')
+        plt.show()
+    if(indexes == [1, 3, 8, 20]):
+        plt.plot(1,dailyValues, 'ro')
+        plt.axis([0,10,0,40], 2)
+        plt.ylabel('Index Values for Monte Alegre Index')
+        plt.xlabel('Monte Alegre Daily Values')
+        plt.show()
 
 
 def angstronIndex (airTemperature, relactiveHumidity):
     ###This function calculates the Angstron Index for a given air temperature and relative humidity, measured at 12h.
     angstron = 0.05 * relactiveHumidity - 0.1 * (airTemperature - 27)
     print('Angstron Index is:', round(angstron, 2))
+    ploting1(angstron, [1,2.5,5,7.5,10])
 
 
 def telicynIndex(airTemperature, dewPoint, N):
@@ -19,6 +47,8 @@ def telicynIndex(airTemperature, dewPoint, N):
         telicyn = math.log(airTemperature[i] - dewPoint[i], 10) + telicyn
         i = i + 1
     print('Telicyn index is:', round(telicyn, 2))
+    ploting1(telicyn, [2, 3.5, 5])
+
 
 def nesterovIndex(airTemperature, airDeficit, N):
     ###This function calculates the Nesterov Index for a set of air temperature and air deficit, measured at 13h.
@@ -29,6 +59,7 @@ def nesterovIndex(airTemperature, airDeficit, N):
         nesterov = airDeficit - airTemperature + nesterov
 
     print('Nesterov Index is:', round(nesterov,2))
+    ploting1(nesterov, [300, 500, 1000, 4000])
 
 def monteAlegre(relactiveHumidity, N):
         ###This function calculates the Monte Alegre's Formula for a set of relative humidity, measured at 13h.
@@ -41,6 +72,8 @@ def monteAlegre(relactiveHumidity, N):
         monte = (100 / relactiveHumidity[i]) + monte
         i = i + 1
     print('Monte Alegre Formula is:', round(monte,2))
+    ploting1(monte, [1, 3, 8, 20])
+
 
 
 print("""\t\tHi! This is the Index Incendies Calculator - IIC.
@@ -71,20 +104,20 @@ while menu == True:
         relHum_value = worksheet.cell(relHum_line, relHum_col).value
         angstronIndex(airTemp_value, relHum_value)
 
-        
+
     elif option == '2':
         airTemp_line_begin = int(input("\nWhat's the line on the Excel file that contains the first Air Temperature information?\n Example: If the first air temperature is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
         airTemp_line_end = int(input("\nWhat's the line on the Excel file that contains the last Air Temperature information?\n Example: If the last air temperature is at the line 25 on the excel document, you must use the value of 24. (1->25 = 24)\n"))
         airTemp_col = int(input("\nWhat's the column on the Excel file that contains the Air Temperature information?\n Example: If the air temperature is at the column O on the excel document, you must use the value of 14. (1->15(O) = 14)\n"))
         airTemp_line_aux = airTemp_line_begin
         airTemp_list = []
-        
+
         dewPon_line_begin = int(input("\nWhat's the line on the Excel file that contains the first Dew Point information?\n Example: If the first dew point is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
         dewPon_line_end = int(input("\nWhat's the line on the Excel file that contains the last Dew Point information?\n Example: If the last dew point is at the line 25 on the excel document, you must use the value of 24. (1->25 = 24)\n"))
         dewPon_col = int(input("\nWhat's the column on the Excel file that contains the Dew Point information?\n Example: If the air temperature is at the column BK on the excel document, you must use the value of 62. (1->63(BK) = 62)\n"))
         dewPon_line_aux = dewPon_line_begin
         dewPon_list = []
-        
+
         while (airTemp_line_end - airTemp_line_aux >= 0):
             airTemp_list.append(worksheet.cell(airTemp_line_aux, airTemp_col).value)
             airTemp_line_aux = airTemp_line_aux + 1
@@ -126,15 +159,3 @@ while menu == True:
     else:
         print("The input value is invalid. The program is finishing.")
         menu = False
-#airTemp12 = worksheet.cell(12, 13).value
-#umiRel = worksheet.cell(12, 37).value
-
-#airTemp13 = worksheet.cell(12, 14).value
-#dewPt = worksheet.cell(12, 62).value
-
-#umiRel13 = worksheet.cell(12, 38).value
-
-#angstronIndex(airTemp12, umiRel)
-#telicynIndex(airTemp13, dewPt, 1)
-#nesterofIndex(airTemp13, )
-#monteAlegre(umiRel13, 1)
