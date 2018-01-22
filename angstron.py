@@ -50,12 +50,14 @@ def telicynIndex(airTemperature, dewPoint, N):
     ploting1(telicyn, [2, 3.5, 5])
 
 
-def nesterovIndex(airTemperature, airDeficit, N):
+def nesterovIndex(airTemperature, relactiveHumidity, N):
     ###This function calculates the Nesterov Index for a set of air temperature and air deficit, measured at 13h.
     i = 0
     nesterov = 0.0
     while i < N:
-        #airDeficit missing
+        pressure = 0,6108 * math.pow(10, ((7,5 * airTemperature)/(237,5+airTemperature)))
+        partialPressure = relactiveHumidity * pressure / 100
+        pressureDeficit = pressure - partialPressure
         nesterov = airDeficit - airTemperature + nesterov
 
     print('Nesterov Index is:', round(nesterov,2))
@@ -87,12 +89,14 @@ option = 0
 menu = True
 
 while menu == True:
-    option = input("""\n\n This is the IIC menu. Type the number to use the following formula.
+    index = input("""\n\n This is the IIC menu. Type the number to use the following formula.
     1 - Angstron Index
     2 - Telicyn Index
     3 - Nesterov Index
     4 - Monte Alegre Formula
     5 - Quit\n""")
+
+
 
     if option == '1':
         airTemp_line = int(input("\nWhat's the line on the Excel file that contains the Air Temperature information?\n Example: If the air temperature is at the line 13 on the excel document, you must use the value of 12. (1->13 = 12)\n"))
